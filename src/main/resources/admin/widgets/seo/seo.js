@@ -55,7 +55,10 @@ exports.get = function(req) {
 
 				var frontpageUrl = libs.portal.pageUrl({ path: site._path, type: "absolute" });
 				var url = libs.portal.pageUrl({ path: content._path, type: "absolute" });
+				var contentForCanonicalUrl = libs.common.getContentForCanonicalUrl(content);
+				var canonicalUrl = contentForCanonicalUrl ? libs.portal.pageUrl({ path: contentForCanonicalUrl._path, type: "absolute" }) : url;
 				var justThePath = url.replace(frontpageUrl,'');
+				var canonicalJustThePath = canonicalUrl.replace(frontpageUrl,'');
 
 				var fallbackImage = siteConfig.seoImage;
 				var fallbackImageIsPrescaled = siteConfig.seoImageIsPrescaled;
@@ -71,7 +74,7 @@ exports.get = function(req) {
 						fullTitle: (pageTitle + titleAppendix),
 						description: description,
 						image: image,
-						canonical: (siteConfig.canonical ? justThePath : null),
+						canonical: (siteConfig.canonical ? canonicalJustThePath : null),
 						blockRobots: (siteConfig.blockRobots || libs.common.getBlockRobots(content))
 					},
 					og: {

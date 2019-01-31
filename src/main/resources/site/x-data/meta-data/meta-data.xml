@@ -20,6 +20,16 @@
 			<help-text>Customize the image used for this content when shared on social media (Facebook, Twitter). Leave empty to let the app automatically find an image for you.</help-text>
 			<occurrences minimum="0" maximum="1"/>
 		</input>
+		<input name="seoContentForCanonicalUrl" type="ContentSelector">
+			<label>Override Canonical URL</label>
+			<help-text>Select a customized source content for canonical URL.</help-text>
+			<occurrences minimum="0" maximum="1"/>
+			<config>
+				<relationshipType>system:reference</relationshipType>
+				<allowPath>${site}/*</allowPath>
+				<showStatus>true</showStatus>
+			</config>
+		</input>
 		<input name="blockRobots" type="CheckBox">
 			<label>Hide from external search engines?</label>
 			<help-text>Checking this will tell external search engines to skip this particular page. Note: The page is not hidden and can still be accessed via URL or links, but search engines will try and not list it in their search results.</help-text>
