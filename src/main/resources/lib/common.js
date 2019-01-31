@@ -134,6 +134,16 @@ exports.getBlockRobots = function(content) {
 	return setWithMixin;
 };
 
+exports.getContentForCanonicalUrl = function(content) {
+	var setWithMixin = content.x[appNamePath]
+		&& content.x[appNamePath][mixinPath]
+		&& content.x[appNamePath][mixinPath].seoContentForCanonicalUrl
+		&& libs.content.get({
+			key: content.x[appNamePath][mixinPath].seoContentForCanonicalUrl
+		});
+	return setWithMixin;
+};
+
 exports.getPageTitle = function(content, site) {
 	var siteConfig = exports.getTheConfig(site);
 
