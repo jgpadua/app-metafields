@@ -11,6 +11,9 @@
 			<label>Override description</label>
 			<help-text>Like with titles you can for each content set a custom description used for SEO. We try to extract this data automatically from suitable existing fields on this content, consult the Github readme for details.</help-text>
 			<occurrences minimum="0" maximum="1"/>
+			<config>
+				<show-counter>true</show-counter>
+			</config>
 		</input>
 		<input name="seoImage" type="ImageSelector">
 			<label>Override image</label>
