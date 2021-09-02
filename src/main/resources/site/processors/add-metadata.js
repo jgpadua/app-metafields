@@ -20,7 +20,7 @@ exports.responseProcessor = function (req, res) {
 
     const url = libs.portal.pageUrl({ path: content._path, type: "absolute" });
     const fallbackImage = siteConfig.seoImage;
-    const fallbackImageIsPrescaled = siteConfig.seoImageIsPrescaled;
+    let fallbackImageIsPrescaled = siteConfig.seoImageIsPrescaled;
     if (isFrontpage && siteConfig.frontpageImage) {
         fallbackImage = siteConfig.frontpageImage;
         fallbackImageIsPrescaled = siteConfig.frontpageImageIsPrescaled;
@@ -32,22 +32,20 @@ exports.responseProcessor = function (req, res) {
         fallbackImageIsPrescaled
     );
 
-    log.info(content._path);
-
     const params = {
         title: pageTitle,
         description: libs.common.getMetaDescription(content, site),
         siteName: site.displayName,
         locale: libs.common.getLang(content, site),
         type: isFrontpage ? "website" : "article",
-        url: url,
-        image: image,
+        url,
+        image,
         imageWidth: 1200, // Twice of 600x315, for retina
         imageHeight: 630,
         blockRobots:
             siteConfig.blockRobots || libs.common.getBlockRobots(content),
-        siteVerification: siteVerification,
-        canonical: libs.portal.pageUrl({ path: content._path }),
+        siteVerification,
+        canonical: siteConfig.canonical || false,
         twitterUserName: siteConfig.twitterUsername,
     };
 
@@ -63,27 +61,36 @@ exports.responseProcessor = function (req, res) {
     // Also - Locate the <html> tag and make sure the "og" namespace is added.
     const titleHtml = "<title>" + pageTitle + titleAppendix + "</title>";
     const ogAttribute = "og: http://ogp.me/ns#";
+    let titleAdded = false;
     if (res.contentType === "text/html") {
         if (res.body) {
             if (typeof res.body === "string") {
                 // Find a title in the html and use that instead of adding our own title
-                const hasTitle = res.body.indexOf("<title>") > -1;
-                if (!hasTitle) {
-                    res.pageContributions.headEnd.push(titleHtml);
+                const titleHasIndex = res.body.indexOf("<title>") > -1;
+                if (titleHasIndex) {
+                    res.body = res.body.replace(
+                        /(<title>)(.*?)(<\/title>)/i,
+                        titleHtml
+                    );
+                    titleAdded = true;
                 }
                 // Find <html> and if it does not have proper "og"-prefix - inject it!
                 const htmlIndex = res.body.toLowerCase().indexOf("<html");
                 const endHtmlIndex = res.body.indexOf(">", htmlIndex);
+                let thereIsAnAttributeThere = false;
                 const tagAttributes = res.body.indexOf("=", htmlIndex);
-                const thereIsAnAttributeThere = tagAttributes;
-                const prefixFound = false;
+                let prefixFound = false;
+                if (tagAttributes) {
+                    thereIsAnAttributeThere = true;
+                }
+                let htmlTagAttributes;
                 if (thereIsAnAttributeThere) {
-                    var htmlTagContents = res.body
+                    const htmlTagContents = res.body
                         .substr(htmlIndex + 5, endHtmlIndex - htmlIndex - 5)
                         .trim(); // Inside <html XX> - 5 is number of characters for <html
-                    var htmlTagAttributes = htmlTagContents.split("="); // Split on = so we can locate all the attributes.
+                    htmlTagAttributes = htmlTagContents.split("="); // Split on = so we can locate all the attributes.
 
-                    for (var i = 0; i < htmlTagAttributes.length; i++) {
+                    for (let i = 0; i < htmlTagAttributes.length; i++) {
                         if (
                             htmlTagAttributes[i].toLowerCase().trim() ===
                             "prefix"
@@ -111,7 +118,7 @@ exports.responseProcessor = function (req, res) {
                     }
                 }
                 // Join the new html element string, and create the new body to return.
-                var fixedHtmlTag = htmlTagAttributes.join("=");
+                let fixedHtmlTag = htmlTagAttributes.join("=");
                 if (!prefixFound) {
                     fixedHtmlTag += ' prefix="' + ogAttribute + '"';
                 }
@@ -122,6 +129,9 @@ exports.responseProcessor = function (req, res) {
                     res.body.substr(endHtmlIndex);
             }
         }
+    }
+    if (!titleAdded) {
+        res.pageContributions.headEnd.push(titleHtml);
     }
 
     if (req.params) {
