@@ -19,6 +19,8 @@ exports.responseProcessor = function (req, res) {
     const siteVerification = siteConfig.siteVerification || null;
 
     const url = libs.portal.pageUrl({ path: content._path, type: "absolute" });
+    const canonicalContent = libs.common.getContentForCanonicalUrl(content);
+    const canonicalUrl = canonicalContent ? libs.portal.pageUrl({ path: canonicalContent._path, type: "absolute"}) : url;
     let fallbackImage = siteConfig.seoImage;
     let fallbackImageIsPrescaled = siteConfig.seoImageIsPrescaled;
     if (isFrontpage && siteConfig.frontpageImage) {
@@ -39,6 +41,7 @@ exports.responseProcessor = function (req, res) {
         locale: libs.common.getLang(content, site),
         type: isFrontpage ? "website" : "article",
         url,
+        canonicalUrl,
         image,
         imageWidth: 1200, // Twice of 600x315, for retina
         imageHeight: 630,
