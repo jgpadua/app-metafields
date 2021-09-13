@@ -1,131 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 	<form>
-		<field-set>
+		<option-set name="general">
 			<label>General settings</label>
-			<items>
-				<input name="canonical" type="CheckBox">
-					<label>Use Canonical meta?</label>
-					<help-text>Generates the canonical page URL meta data for all content. You can also overwrite canonical page from current content configuration.</help-text>
-					<!--<default>checked</default>-->
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="siteVerification" type="TextLine">
-					<label>Google Search Console (site verification code)</label>
-					<help-text>Do you want to use Google Search Console? Then you need to verify that you own the site. Add verification code in this field to generate the necessary meta field. We will not generate this tag if field is left empty (good if you've already added this field elsewhere).</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="blockRobots" type="CheckBox">
-					<label>Hide site from search engines?</label>
-					<help-text>Caution: Use this to ask search engines to ignore your entire site!</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="disableAppConfig" type="CheckBox">
-					<label>Don't overwrite values from app.config</label>
-					<help-text>It's possible to configure this app for all your site through a file on the server, here you can disable this behavior.</help-text>
-					<default>false</default>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-			</items>
-		</field-set>
+			<occurrences minimum="1" maximum="1" />
+			<options minimum="1" maximum="1">
+				<option name="default">
+					<label>options</label>
+					<default>true</default>
+					<items>
+						<input name="canonical" type="CheckBox">
+							<label>Use Canonical meta?</label>
+							<help-text>Generates the canonical page URL meta data for all content. You can also overwrite canonical page from current content configuration.</help-text>
+							<!--<default>checked</default>-->
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="siteVerification" type="TextLine">
+							<label>Google Search Console (site verification code)</label>
+							<help-text>Do you want to use Google Search Console? Then you need to verify that you own the site. Add verification code in this field to generate the necessary meta field. We will not generate this tag if field is left empty (good if you've already added this field elsewhere).</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="blockRobots" type="CheckBox">
+							<label>Hide site from search engines?</label>
+							<help-text>Caution: Use this to ask search engines to ignore your entire site!</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="disableAppConfig" type="CheckBox">
+							<label>Don't overwrite values from app.config</label>
+							<help-text>It's possible to configure this app for all your site through a file on the server, here you can disable this behavior.</help-text>
+							<default>false</default>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+					</items>
+				</option>
+			</options>
+		</option-set>
 		<!-- Option-set for Twitter yes/now - expands and shows input -->
-		<field-set>
+		<option-set name="twitter">
 			<label>Twitter Cards</label>
-			<items>
-				<input name="twitterUsername" type="TextLine">
-					<label>Twitter username (must begin with @)</label>
-					<help-text>Using Twitter? Just add your Twitter username here (starting with the @ symbol) to generate Twitter Card metadata on all pages. It uses the same data used in Open Graph metadata, so no further settings needed.</help-text>
-					<config>
-						<regexp>^[@]+.*$</regexp>
-					</config>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-			</items>
-		</field-set>
+			<occurrences minimum="1" maximum="1" />
+			<options minimum="1" maximum="1">
+				<option name="default">
+					<label>options</label>
+					<default>true</default>
+					<items>
+						<input name="twitterUsername" type="TextLine">
+							<label>Twitter username (must begin with @)</label>
+							<help-text>Using Twitter? Just add your Twitter username here (starting with the @ symbol) to generate Twitter Card metadata on all pages. It uses the same data used in Open Graph metadata, so no further settings needed.</help-text>
+							<config>
+								<regexp>^[@]+.*$</regexp>
+							</config>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+					</items>
+				</option>
+			</options>
+		</option-set>
 		<!-- Option set for at least "configure fallbacks" -->
-		<field-set>
+		<option-set name="fallback">
 			<label>Fallback settings</label>
-			<items>
-				<input name="seoImage" type="ImageSelector">
-					<label>Content image fallback</label>
-					<help-text>If current content image is not found, use this as last resort. Tip: add company logo here!</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="seoImageIsPrescaled" type="CheckBox">
-					<label>Serve the content fallback image as is. No system scaling.</label>
-					<help-text>Image will otherwise be scaled to 1200x630px and set to jpg with quality 85</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="frontpageImage" type="ImageSelector">
-					<label>Frontpage image fallback</label>
-					<help-text>Use this for a special image for the frontpage only!</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="frontpageImageIsPrescaled" type="CheckBox">
-					<label>Serve the frontpage image as is. No system scaling.</label>
-					<help-text>Image will otherwise be scaled to 1200x630px and set to jpg with quality 85</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="seoTitle" type="TextLine">
-					<label>Title fallback</label>
-					<help-text>If current content title is not found this title will be used as a fallback. If not used, the site content's displayName will be used instead.</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="seoDescription" type="TextArea">
-					<label>Description fallback</label>
-					<help-text>A default fallback description to use if current content does not have one. If not used, the site content's description field will be used instead. However, if that also is empty, we'll skip generating this meta field.</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-			</items>
-		</field-set>
+			<occurrences minimum="1" maximum="1" />
+			<options minimum="1" maximum="1">
+				<option name="default">
+					<label>options</label>
+					<default>true</default>
+					<items>
+						<input name="seoImage" type="ImageSelector">
+							<label>Content image fallback</label>
+							<help-text>If current content image is not found, use this as last resort. Tip: add company logo here!</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="seoImageIsPrescaled" type="CheckBox">
+							<label>Serve the content fallback image as is. No system scaling.</label>
+							<help-text>Image will otherwise be scaled to 1200x630px and set to jpg with quality 85</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="frontpageImage" type="ImageSelector">
+							<label>Frontpage image fallback</label>
+							<help-text>Use this for a special image for the frontpage only!</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="frontpageImageIsPrescaled" type="CheckBox">
+							<label>Serve the frontpage image as is. No system scaling.</label>
+							<help-text>Image will otherwise be scaled to 1200x630px and set to jpg with quality 85</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="seoTitle" type="TextLine">
+							<label>Title fallback</label>
+							<help-text>If current content title is not found this title will be used as a fallback. If not used, the site content's displayName will be used instead.</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="seoDescription" type="TextArea">
+							<label>Description fallback</label>
+							<help-text>A default fallback description to use if current content does not have one. If not used, the site content's description field will be used instead. However, if that also is empty, we'll skip generating this meta field.</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+					</items>
+				</option>
+			</options>
+		</option-set>
 		<!-- Option set - Title handling yes/no -->
-		<field-set>
+		<option-set name="title">
 			<label>Title config</label>
-			<items>
-				<input name="titleBehaviour" type="CheckBox">
-					<label>Append site name to all titles?</label>
-					<help-text>This will add the main site's name/title (displayName on site content in Content Studio) at the end of the title on all pages. So it will look something like "Current page - My Site".</help-text>
-					<default>checked</default>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="titleSeparator" type="TextLine">
-					<label>Separator ('content - site')</label>
-					<help-text>If site title is added to page title, use this to separate them. Default is a dash, " - ", making a page title become "Page title - Site title".</help-text>
-					<default>-</default>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="titleFrontpageBehaviour" type="CheckBox">
-					<label>Remove site name on frontpage?</label>
-					<help-text>On the frontpage, content title and site title is the same, so title result might look duplicate and odd (like "My Website - My Website", use this setting to remove site name from frontpage title and only use content title.</help-text>
-					<default>checked</default>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-			</items>
-		</field-set>
+			<occurrences minimum="1" maximum="1" />
+			<options minimum="1" maximum="1">
+				<option name="default">
+					<label>options</label>
+					<default>true</default>
+					<items>
+						<input name="titleBehaviour" type="CheckBox">
+							<label>Append site name to all titles?</label>
+							<help-text>This will add the main site's name/title (displayName on site content in Content Studio) at the end of the title on all pages. So it will look something like "Current page - My Site".</help-text>
+							<default>checked</default>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="titleSeparator" type="TextLine">
+							<label>Separator ('content - site')</label>
+							<help-text>If site title is added to page title, use this to separate them. Default is a dash, " - ", making a page title become "Page title - Site title".</help-text>
+							<default>-</default>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="titleFrontpageBehaviour" type="CheckBox">
+							<label>Remove site name on frontpage?</label>
+							<help-text>On the frontpage, content title and site title is the same, so title result might look duplicate and odd (like "My Website - My Website", use this setting to remove site name from frontpage title and only use content title.</help-text>
+							<default>checked</default>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+					</items>
+				</option>
+			</options>
+		</option-set>
 		<!-- Option set for advanced configuration -->
-		<field-set>
-			<label>Advanced: prioritized JSON paths</label><!-- Customized paths yes/no --><!-- +Text about advanced/custom settings needed -->
-			<items>
-				<input name="pathsImages" type="TextLine">
-					<label>Images (comma-separated)</label>
-					<help-text>Any custom fields in your content types that you want to use for generating metadata for images? Add them here, comma separated. It's the json paths we're after here, like "headerImage, someOtherfField" or "someOtherField". It will be prioritized before all other fields. Check Github readme for detailed explanation.</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="pathsTitles" type="TextLine">
-					<label>Titles (comma-separated)</label>
-					<help-text>Any custom fields in your content types that you want to use for generating metadata for titles? Add them here, comma separated. It's the json paths we're after here, like "headerText, myCoolTitle" or "mySecondaryTitle". It will be prioritized before all other fields. Check Github readme for detailed explanation.</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-				<input name="pathsDescriptions" type="TextLine">
-					<label>Descriptions (comma-separated)</label>
-					<help-text>Any custom fields in your content types that you want to use for generating metadata for page description? Add them here, comma separated. It's the json paths we're after here, like "ingress, subTitle" or "subTitle". It will be prioritized before all other fields. Check Github readme for detailed explanation.</help-text>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-			</items>
-		</field-set>
+		<option-set name="advanced">
+			<label>Advanced: prioritized JSON paths</label> <!-- Customized paths yes/no --> <!-- +Text about advanced/custom settings needed -->
+			<occurrences maximum="1" minimum="1" />
+			<options minimum="1" maximum="1">
+				<option name="default">
+					<label>option</label>
+					<default>true</default>
+					<items>
+						<input name="pathsImages" type="TextLine">
+							<label>Images (comma-separated)</label>
+							<help-text>Any custom fields in your content types that you want to use for generating metadata for images? Add them here, comma separated. It's the json paths we're after here, like "headerImage, someOtherfField" or "someOtherField". It will be prioritized before all other fields. Check Github readme for detailed explanation.</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="pathsTitles" type="TextLine">
+							<label>Titles (comma-separated)</label>
+							<help-text>Any custom fields in your content types that you want to use for generating metadata for titles? Add them here, comma separated. It's the json paths we're after here, like "headerText, myCoolTitle" or "mySecondaryTitle". It will be prioritized before all other fields. Check Github readme for detailed explanation.</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+						<input name="pathsDescriptions" type="TextLine">
+							<label>Descriptions (comma-separated)</label>
+							<help-text>Any custom fields in your content types that you want to use for generating metadata for page description? Add them here, comma separated. It's the json paths we're after here, like "ingress, subTitle" or "subTitle". It will be prioritized before all other fields. Check Github readme for detailed explanation.</help-text>
+							<occurrences minimum="0" maximum="1" />
+						</input>
+					</items>
+				</option>
+			</options>
+		</option-set>
 	</form>
 	<x-data name="meta-data" />
 	<processors>
-		<response-processor name="add-metadata" order="10"/>
+		<response-processor name="add-metadata" order="10" />
 	</processors>
 </site>

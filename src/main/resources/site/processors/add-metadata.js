@@ -16,8 +16,6 @@ exports.responseProcessor = function (req, res) {
     const pageTitle = libs.common.getPageTitle(content, site);
     const titleAppendix = libs.common.getAppendix(site, isFrontpage);
 
-    const siteVerification = siteConfig.siteVerification || null;
-
     const url = libs.portal.pageUrl({ path: content._path, type: "absolute" });
     const canonicalContent = libs.common.getContentForCanonicalUrl(content);
     const canonicalUrl = canonicalContent ? libs.portal.pageUrl({ path: canonicalContent._path, type: "absolute"}) : url;
@@ -34,23 +32,37 @@ exports.responseProcessor = function (req, res) {
         fallbackImageIsPrescaled
     );
 
+    // Rewrite
+    // General settings
+    let canonical = false;
+    let siteVerification = false;
+    let blockRobots = false;
+
+    if (siteConfig.general && siteConfig.general.default) {
+        const generalDefault = siteConfig.general.default;
+        canonical = generalDefault.canonical || false;
+        siteVerification = generalDefault.siteVerification || false;
+        blockRobots = generalDefault.blockRobots || libs.common.getBlockRobots(content);
+    }
+
     const params = {
-        title: pageTitle,
+        blockRobots,
+        canonical,
+        canonicalUrl,
         description: libs.common.getMetaDescription(content, site),
-        siteName: site.displayName,
         locale: libs.common.getLang(content, site),
+        image,
+        imageHeight: 630,
+        imageWidth: 1200, // Twice of 600x315, for retina
+        siteName: site.displayName,
+        siteVerification,
+        title: pageTitle,
+        twitterUserName: siteConfig.twitterUsername,
         type: isFrontpage ? "website" : "article",
         url,
-        canonicalUrl,
-        image,
-        imageWidth: 1200, // Twice of 600x315, for retina
-        imageHeight: 630,
-        blockRobots:
-            siteConfig.blockRobots || libs.common.getBlockRobots(content),
-        siteVerification,
-        canonical: siteConfig.canonical,
-        twitterUserName: siteConfig.twitterUsername,
     };
+
+    log.info(JSON.stringify(params, null, 4));
 
     const metadata = libs.thymeleaf.render(view, params);
 
