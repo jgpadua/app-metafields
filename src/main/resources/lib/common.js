@@ -1,4 +1,4 @@
-var libs = {
+const libs = {
 	portal: require('/lib/xp/portal'),
 	content: require('/lib/xp/content'),
 	util: require('/lib/util')
@@ -10,21 +10,30 @@ var mixinPath = 'meta-data';
 // The configuration needs to be fetched first from site config (using current content if site context is not available - like for widgets), and lastly we'll check for any config files and use these to overwrite.
 exports.getTheConfig = function(site) {
 	var config = libs.portal.getSiteConfig();
-	if (!config) {
-		config = exports.getSiteConfig(site, app.name);
-	}
-	if(app.config && !config.disableAppConfig) {
-		for (var prop in app.config) {
-			var value = app.config[prop];
-			if (prop !== 'config.filename' && prop !== 'service.pid') { // Default props for .cfg-files, not to use further.
-				if (value === 'true' || value === 'false') {
-					value = value === 'true';
-				}
-				config[prop] = value;
-			}
+    if (!config) {
+        config = exports.getSiteConfig(site, app.name);
+    }
+    let disableAppConfig = false;
+    if (config.general && config.general.default) {
+        disableAppConfig = config.general.default.disableAppConfig;
+    }
+    if (app.config && !disableAppConfig) {
+		log.info("Found app config. Override not disabled");
+		// General settings
+		if (config.general == undefined) {
+			config.general = { default: {} };
 		}
-	}
-	return config;
+		if (app.config.canonical) {
+			config.general.default.canonical = app.config.canonical;
+		}
+		if (app.config.blockRobots) {
+			config.general.default.blockRobots = app.config.blockRobots;
+		}
+		if (app.config.siteVerification) {
+			config.general.default.siteVerification = app.config.siteVerification;
+		}
+    }
+    return config;
 };
 
 exports.getLang = function(content, site) {
