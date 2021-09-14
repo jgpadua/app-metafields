@@ -18,9 +18,8 @@ exports.getTheConfig = function(site) {
         disableAppConfig = config.general.default.disableAppConfig;
     }
     if (app.config && !disableAppConfig) {
-		log.info("Found app config. Override not disabled");
 		// General settings
-		if (config.general == undefined) {
+		if (config.general === undefined) {
 			config.general = { default: {} };
 		}
 		if (app.config.canonical) {
@@ -32,6 +31,29 @@ exports.getTheConfig = function(site) {
 		if (app.config.siteVerification) {
 			config.general.default.siteVerification = app.config.siteVerification;
 		}
+
+		//not implemented yet properties
+		//Twitter
+		if (config.twitter === undefined) {
+			config.twitter = { default: {} };
+		}
+		if (app.config.twitterUsername) {
+			config.twitter.default.twitterUsername = app.config.twitterUsername;
+		}
+
+		//SEO fallback
+		if (app.config.seoImage) {}
+		if (app.config.seoImageIsPrescaled) {}
+		if (app.config.frontpageImage) {}
+		if (app.config.frontpageImageIsPrescaled) {}
+		if (app.config.seoTitle) {}
+		if (app.config.seoDescription) {}		
+
+		//Title
+		if (app.config.titleSeparator) {}
+		if (app.config.titleBehavior) {}
+		if (app.config.titleFrontpageBehaviour) {}
+
     }
     return config;
 };

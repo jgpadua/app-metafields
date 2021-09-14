@@ -45,6 +45,13 @@ exports.responseProcessor = function (req, res) {
         blockRobots = generalDefault.blockRobots || libs.common.getBlockRobots(content);
     }
 
+    //Twitter settings
+    let twitterUsername = false;
+
+    if (siteConfig.twitter && siteConfig.twitter.default) {
+        twitterUsername = siteConfig.twitter.default.twitterUsername
+    }
+
     const params = {
         blockRobots,
         canonical,
@@ -57,7 +64,7 @@ exports.responseProcessor = function (req, res) {
         siteName: site.displayName,
         siteVerification,
         title: pageTitle,
-        twitterUserName: siteConfig.twitterUsername,
+        twitterUsername: siteConfig.twitterUsername,
         type: isFrontpage ? "website" : "article",
         url,
     };

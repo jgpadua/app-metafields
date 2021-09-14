@@ -15,13 +15,13 @@
         <meta property="og:image:width" data-th-attr="content=${imageWidth}" />
         <meta property="og:image:height" data-th-attr="content=${imageHeight}" />
     </div>
-    <div data-th-if="${twitterUserName}" data-th-remove="tag">
+    <div data-th-if="${twitterUsername}" data-th-remove="tag">
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" data-th-attr="content=${title}" />
         <meta name="twitter:description" data-th-attr="content=${description}" />
         <div data-th-if="${image}" data-th-remove="tag">
             <meta name="twitter:image:src" data-th-attr="content=${image}" />
         </div>
-        <meta name="twitter:site" data-th-attr="content=${twitterUserName}" />
+        <meta name="twitter:site" data-th-attr="content=${twitterUsername}" />
     </div>
 </div>
