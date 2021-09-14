@@ -32,7 +32,6 @@ exports.getTheConfig = function(site) {
 			config.general.default.siteVerification = app.config.siteVerification;
 		}
 
-		//not implemented yet properties
 		//Twitter
 		if (config.twitter === undefined) {
 			config.twitter = { default: {} };
@@ -41,6 +40,7 @@ exports.getTheConfig = function(site) {
 			config.twitter.default.twitterUsername = app.config.twitterUsername;
 		}
 
+		//not implemented yet properties:
 		//SEO fallback
 		if (app.config.seoImage) {}
 		if (app.config.seoImageIsPrescaled) {}
@@ -82,24 +82,19 @@ exports.getSite = function(siteUrl) {
 // Find the site config even when the context is not known.
 exports.getSiteConfig = function(site, applicationKey) {
 	// Code courtesy of PVMerlo at Enonic Discuss - https://discuss.enonic.com/u/PVMerlo
-	if (site) {
-		if (site.data) {
-			if (site.data.siteConfig) {
-				var siteConfigs = libs.util.data.forceArray(site.data.siteConfig);
-				var siteConfig = {};
-				siteConfigs.forEach( function(cfg) {
-					if (applicationKey && cfg.applicationKey == applicationKey){
-						siteConfig = cfg;
-					} else if (!applicationKey && cfg.applicationKey == app.name) {
-						siteConfig = cfg;
-					}
-				});
-				return siteConfig.config;
-			}
-		}
-	}
+	if (site && site.data && site.data.siteConfig) {
+        var siteConfigs = libs.util.data.forceArray(site.data.siteConfig);
+        var siteConfig = {};
+        siteConfigs.forEach(function (cfg) {
+            if (applicationKey && cfg.applicationKey == applicationKey) {
+                siteConfig = cfg;
+            } else if (!applicationKey && cfg.applicationKey == app.name) {
+                siteConfig = cfg;
+            }
+        });
+        return siteConfig.config;
+    }
 };
-
 
 function commaStringToArray(str) {
 	var commas = str || '';

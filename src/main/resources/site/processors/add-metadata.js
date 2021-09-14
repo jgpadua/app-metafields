@@ -64,7 +64,7 @@ exports.responseProcessor = function (req, res) {
         siteName: site.displayName,
         siteVerification,
         title: pageTitle,
-        twitterUsername: siteConfig.twitterUsername,
+        twitterUsername,
         type: isFrontpage ? "website" : "article",
         url,
     };
