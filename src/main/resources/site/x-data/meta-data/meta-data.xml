@@ -27,7 +27,6 @@
 			<config>
 				<relationshipType>system:reference</relationshipType>
 				<allowPath>${site}/*</allowPath>
-				<showStatus>true</showStatus>
 			</config>
 		</input>
 		<input name="blockRobots" type="CheckBox">
