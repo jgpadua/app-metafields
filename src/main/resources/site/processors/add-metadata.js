@@ -84,8 +84,6 @@ exports.responseProcessor = function (req, res) {
         url,
     };
 
-    log.info(JSON.stringify(params, null, 4));
-
     const metadata = libs.thymeleaf.render(view, params);
 
     // Force arrays since single values will be return as string instead of array
