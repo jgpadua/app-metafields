@@ -26,11 +26,7 @@ exports.get = function(req) {
 
 	var contentId = req.params.contentId;
 
-	if (!contentId && libs.portal.getContent()) {
-		contentId = libs.portal.getContent()._id;
-	}
-
-	if (!contentId) {
+	if (!libs.content.exists({ key: contentId })) {
 		return {
 			contentType: 'text/html',
 			body: '<widget class="error">No content selected</widget>'
@@ -68,19 +64,22 @@ exports.get = function(req) {
 				}
 				var image = libs.common.getOpenGraphImage(content, site, fallbackImage, fallbackImageIsPrescaled);
 
+				const general = siteConfig.general && siteConfig.general.default ? siteConfig.general.default : {};
+				const twitter = siteConfig.twitter && siteConfig.twitter.default ? siteConfig.twitter.default : {};
+
 				params = {
 					summary: {
 						title: pageTitle,
 						fullTitle: (pageTitle + titleAppendix),
-						description: description,
-						image: image,
-						canonical: (siteConfig.canonical ? canonicalJustThePath : null),
-						blockRobots: (siteConfig.blockRobots || libs.common.getBlockRobots(content))
+						description,
+						image,
+						canonical: (general.canonical ? canonicalJustThePath : null),
+						blockRobots: (general.blockRobots || libs.common.getBlockRobots(content))
 					},
 					og: {
 						type: (isFrontpage ? 'website' : 'article'),
 						title: pageTitle,
-						description: description,
+						description,
 						siteName: site.displayName,
 						url: justThePath,
 						locale: libs.common.getLang(content,site),
@@ -91,11 +90,11 @@ exports.get = function(req) {
 						}
 					},
 					twitter: {
-						active: (siteConfig.twitterUsername ? true : false),
+						active: (twitter.twitterUsername ? true : false),
 						title: pageTitle,
-						description: description,
-						image: image,
-						site: siteConfig.twitterUsername || null
+						description,
+						image,
+						site: twitter.twitterUsername || null
 					}
 				};
 			}
