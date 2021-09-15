@@ -19,18 +19,6 @@ exports.responseProcessor = function (req, res) {
     const url = libs.portal.pageUrl({ path: content._path, type: "absolute" });
     const canonicalContent = libs.common.getContentForCanonicalUrl(content);
     const canonicalUrl = canonicalContent ? libs.portal.pageUrl({ path: canonicalContent._path, type: "absolute"}) : url;
-    let fallbackImage = siteConfig.seoImage;
-    let fallbackImageIsPrescaled = siteConfig.seoImageIsPrescaled;
-    if (isFrontpage && siteConfig.frontpageImage) {
-        fallbackImage = siteConfig.frontpageImage;
-        fallbackImageIsPrescaled = siteConfig.frontpageImageIsPrescaled;
-    }
-    const image = libs.common.getOpenGraphImage(
-        content,
-        site,
-        fallbackImage,
-        fallbackImageIsPrescaled
-    );
 
     // Rewrite
     // General settings
@@ -38,18 +26,45 @@ exports.responseProcessor = function (req, res) {
     let siteVerification = false;
     let blockRobots = false;
 
-    if (siteConfig.general && siteConfig.general.default) {
-        const generalDefault = siteConfig.general.default;
-        canonical = generalDefault.canonical || false;
-        siteVerification = generalDefault.siteVerification || false;
-        blockRobots = generalDefault.blockRobots || libs.common.getBlockRobots(content);
+    const general = siteConfig.general && siteConfig.general.default ? siteConfig.general.default : null;
+
+    if (general) {
+        canonical = general.canonical || false;
+        siteVerification = general.siteVerification || false;
+        blockRobots = general.blockRobots || libs.common.getBlockRobots(content);
     }
 
     //Twitter settings
     let twitterUsername = false;
 
-    if (siteConfig.twitter && siteConfig.twitter.default) {
-        twitterUsername = siteConfig.twitter.default.twitterUsername
+    const twitter = siteConfig.twitter && siteConfig.twitter.default ? siteConfig.twitter.default : null;
+
+    if (twitter) {
+        twitterUsername = twitter.twitterUsername;
+    }
+
+    //Fallback settings
+    let image = false;
+    let fallbackImage = false;
+    let fallbackImageIsPrescaled = false;
+
+    const fallback = siteConfig.fallback && siteConfig.fallback.default ? siteConfig.fallback.default : null;
+
+    if (fallback) {
+        fallbackImage = fallback.seoImage;
+        fallbackImageIsPrescaled = fallback.seoImageIsPrescaled;
+
+        if (isFrontpage && fallback.frontpageImage) {
+            fallbackImage = fallback.frontpageImage;
+            fallbackImageIsPrescaled = fallback.frontpageImageIsPrescaled;
+        }
+
+        image = libs.common.getOpenGraphImage(
+            content,
+            site,
+            fallbackImage,
+            fallbackImageIsPrescaled
+        );
     }
 
     const params = {

@@ -26,7 +26,7 @@ exports.get = function(req) {
 
 	var contentId = req.params.contentId;
 
-	if (!libs.content.exists({ key: contentId })) {
+	if (!contentId || !libs.content.exists({ key: contentId })) {
 		return {
 			contentType: 'text/html',
 			body: '<widget class="error">No content selected</widget>'
@@ -54,18 +54,19 @@ exports.get = function(req) {
 				var contentForCanonicalUrl = libs.common.getContentForCanonicalUrl(content);
 				var canonicalUrl = contentForCanonicalUrl ? libs.portal.pageUrl({ path: contentForCanonicalUrl._path, type: "absolute" }) : url;
 				var justThePath = url.replace(frontpageUrl,'');
-				var canonicalJustThePath = canonicalUrl.replace(frontpageUrl,'');
-
-				var fallbackImage = siteConfig.seoImage;
-				var fallbackImageIsPrescaled = siteConfig.seoImageIsPrescaled;
-				if (isFrontpage && siteConfig.frontpageImage) {
-					 fallbackImage = siteConfig.frontpageImage;
-					 fallbackImageIsPrescaled = siteConfig.frontpageImageIsPrescaled;
-				}
-				var image = libs.common.getOpenGraphImage(content, site, fallbackImage, fallbackImageIsPrescaled);
+				var canonicalJustThePath = canonicalUrl.replace(frontpageUrl,'');				
 
 				const general = siteConfig.general && siteConfig.general.default ? siteConfig.general.default : {};
 				const twitter = siteConfig.twitter && siteConfig.twitter.default ? siteConfig.twitter.default : {};
+				const fallback = siteConfig.fallback && siteConfig.fallback.default ? siteConfig.fallback.default : {};
+
+				var fallbackImage = fallback.seoImage;
+				var fallbackImageIsPrescaled = fallback.seoImageIsPrescaled;
+				if (isFrontpage && fallback.frontpageImage) {
+					 fallbackImage = fallback.frontpageImage;
+					 fallbackImageIsPrescaled = fallback.frontpageImageIsPrescaled;
+				}
+				var image = libs.common.getOpenGraphImage(content, site, fallbackImage, fallbackImageIsPrescaled);
 
 				params = {
 					summary: {

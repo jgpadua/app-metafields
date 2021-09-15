@@ -17,43 +17,85 @@ exports.getTheConfig = function(site) {
     if (config.general && config.general.default) {
         disableAppConfig = config.general.default.disableAppConfig;
     }
+	//Set empty values so the lookup does not crash
+	if (config.general === undefined) {
+		config.general = { default: {} };
+	}
+	if (config.twitter === undefined) {
+		config.twitter = { default: {} };
+	}
+	if (config.fallback === undefined) {
+		config.fallback = { default: {} };
+	}
+	if (config.title === undefined) {
+		config.title = { default: {} };
+	}
+	if (config.advanced === undefined) {
+		config.advanced = { default: {} };
+	}
+
     if (app.config && !disableAppConfig) {
 		// General settings
-		if (config.general === undefined) {
-			config.general = { default: {} };
-		}
-		if (app.config.canonical) {
-			config.general.default.canonical = app.config.canonical;
-		}
-		if (app.config.blockRobots) {
-			config.general.default.blockRobots = app.config.blockRobots;
-		}
-		if (app.config.siteVerification) {
-			config.general.default.siteVerification = app.config.siteVerification;
-		}
+        if (app.config.canonical) {
+            config.general.default.canonical = app.config.canonical;
+        }
+        if (app.config.blockRobots) {
+            config.general.default.blockRobots = app.config.blockRobots;
+        }
+        if (app.config.siteVerification) {
+            config.general.default.siteVerification =
+                app.config.siteVerification;
+        }
 
-		//Twitter
-		if (config.twitter === undefined) {
-			config.twitter = { default: {} };
+        // Twitter
+        if (app.config.twitterUsername) {
+            config.twitter.default.twitterUsername = app.config.twitterUsername;
+        }
+
+        // SEO fallback
+        if (app.config.seoImage) {
+            config.fallback.default.seoImage = app.config.seoImage;
+        }
+        if (app.config.seoImageIsPrescaled) {
+            config.fallback.default.seoImageIsPrescaled =
+                app.config.seoImageIsPrescaled;
+        }
+        if (app.config.frontpageImage) {
+            config.fallback.default.frontpageImage = app.config.frontPageImage;
+        }
+        if (app.config.frontpageImageIsPrescaled) {
+            config.fallback.default.frontpageImageIsPrescaled =
+                app.config.frontpageImageIsPrescaled;
+        }
+        if (app.config.seoTitle) {
+            config.fallback.default.seoTitle = app.config.seoTitle;
+        }
+        if (app.config.seoDescription) {
+            config.fallback.default.seoDescription = app.config.seoDescription;
+        }
+
+        // Title
+        if (app.config.titleSeparator) {
+            config.title.default.titleSeparator = app.config.titleSeparator;
+        }
+        if (app.config.titleBehaviour) {
+			config.title.default.titleBehaviour = app.config.titleBehaviour;
+        }
+        if (app.config.titleFrontpageBehaviour) {
+			config.title.default.titleFrontpageBehaviour = app.config.titleFrontpageBehaviour;
+        }
+
+		// Advanced
+		if (app.config.pathsImages) {
+			config.advanced.default.pathsImages = app.config.pathsImages;
 		}
-		if (app.config.twitterUsername) {
-			config.twitter.default.twitterUsername = app.config.twitterUsername;
+		if (app.config.pathsTitles) {
+			config.advanced.default.pathsTitles = app.config.pathsTitles;
 		}
-
-		//not implemented yet properties:
-		//SEO fallback
-		if (app.config.seoImage) {}
-		if (app.config.seoImageIsPrescaled) {}
-		if (app.config.frontpageImage) {}
-		if (app.config.frontpageImageIsPrescaled) {}
-		if (app.config.seoTitle) {}
-		if (app.config.seoDescription) {}		
-
-		//Title
-		if (app.config.titleSeparator) {}
-		if (app.config.titleBehavior) {}
-		if (app.config.titleFrontpageBehaviour) {}
-
+		if (app.config.pathsDescriptions) {
+			config.advanced.default.pathsDescriptions = app.config.pathsDescriptions;
+		}
+		
     }
     return config;
 };
@@ -143,9 +185,9 @@ function stringOrNull(o) {
 exports.getAppendix = function(site, isFrontpage) {
 	var siteConfig = exports.getTheConfig(site);
 	var titleAppendix = '';
-	if (siteConfig.titleBehaviour || !siteConfig.hasOwnProperty("titleBehaviour") ) {
-		 var separator = siteConfig.titleSeparator || '-';
-		 var titleRemoveOnFrontpage = siteConfig.hasOwnProperty("titleFrontpageBehaviour") ? siteConfig.titleFrontpageBehaviour : true; // Default true needs to be respected
+	if (siteConfig.title.default.titleBehaviour || !siteConfig.title.default.hasOwnProperty("titleBehaviour") ) {
+		 var separator = siteConfig.title.default.titleSeparator || '-';
+		 var titleRemoveOnFrontpage = siteConfig.title.default.hasOwnProperty("titleFrontpageBehaviour") ? siteConfig.title.default.titleFrontpageBehaviour : true; // Default true needs to be respected
 		 if (!isFrontpage || !titleRemoveOnFrontpage) {
 			  titleAppendix = ' ' + separator + ' ' + site.displayName;
 		 }
@@ -173,7 +215,7 @@ exports.getContentForCanonicalUrl = function(content) {
 exports.getPageTitle = function(content, site) {
 	var siteConfig = exports.getTheConfig(site);
 
-	var userDefinedPaths = siteConfig.pathsTitles || '';
+	var userDefinedPaths = siteConfig.advanced.default.pathsTitles || '';
 	var userDefinedArray = userDefinedPaths ? commaStringToArray(userDefinedPaths) : [];
 	var userDefinedValue = userDefinedPaths ? findValueInJson(content, userDefinedArray) : null;
 
@@ -185,7 +227,7 @@ exports.getPageTitle = function(content, site) {
 			: stringOrNull(userDefinedValue) // json property defined by user as important
 			|| stringOrNull(content.data.title) || stringOrNull(content.data.heading) || stringOrNull(content.data.header) // Use other typical content titles (overrides displayName)
 			|| stringOrNull(content.displayName) // Use content's display name
-			|| stringOrNull(siteConfig.seoTitle) // Use default og-title for site
+			|| stringOrNull(siteConfig.fallback.default.seoTitle) // Use default og-title for site
 			|| stringOrNull(site.displayName) // Use site default
 			|| ''
 
@@ -195,7 +237,7 @@ exports.getPageTitle = function(content, site) {
 exports.getMetaDescription = function(content, site) {
 	var siteConfig = exports.getTheConfig(site);
 
-	var userDefinedPaths = siteConfig.pathsDescriptions || '';
+	var userDefinedPaths = siteConfig.advanced.default.pathsDescriptions || '';
 	var userDefinedArray = userDefinedPaths ? commaStringToArray(userDefinedPaths) : [];
 	var userDefinedValue = userDefinedPaths ? findValueInJson(content,userDefinedArray) : null;
 
@@ -206,7 +248,7 @@ exports.getMetaDescription = function(content, site) {
 	var metaDescription = setWithMixin ? content.x[appNamePath][mixinPath].seoDescription // Get from mixin
 					: userDefinedValue
 					|| content.data.preface || content.data.description || content.data.summary // Use typical content summary names
-					|| siteConfig.seoDescription // Use default for site
+					|| siteConfig.fallback.default.seoDescription // Use default for site
 					|| site.description // Use bottom default
 					|| ''; // Don't crash plugin on clean installs
 
@@ -220,9 +262,9 @@ exports.getMetaDescription = function(content, site) {
 exports.getOpenGraphImage = function(content, site, defaultImg, defaultImgPrescaled) {
 	var siteConfig = exports.getTheConfig(site);
 
-	var userDefinedPaths = siteConfig.pathsImages || '';
+	var userDefinedPaths = siteConfig.advanced.default.pathsImages || '';
 	var userDefinedArray = userDefinedPaths ? commaStringToArray(userDefinedPaths) : [];
-	var userDefinedValue = userDefinedPaths ? findValueInJson(content,userDefinedArray) : null;
+	var userDefinedValue = userDefinedPaths ? findValueInJson(content, userDefinedArray) : null;
 
 	var setWithMixin = content.x[appNamePath]
 		&& content.x[appNamePath][mixinPath]
