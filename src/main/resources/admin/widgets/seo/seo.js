@@ -20,8 +20,8 @@ exports.get = function(req) {
 /*
 	TODO: Display content settings? If any, then fallbacks.
 	x": {
-     "com-enonic-app-metafields": {
-         "meta-data"
+		"com-enonic-app-metafields": {
+			"meta-data"
 */
 
 	var contentId = req.params.contentId;
@@ -36,7 +36,7 @@ exports.get = function(req) {
 	var params = {};
 	var content = libs.content.get({ key: contentId });
 
-    if (content) {
+	if (content) {
 		// The first part of the content '_path' is the site's URL, make sure to fetch current site!
 		var parts = content._path.split('/');
 		var site = libs.common.getSite(parts[1]); // Send the first /x/-part of the content's path.

@@ -10,13 +10,13 @@ var mixinPath = 'meta-data';
 // The configuration needs to be fetched first from site config (using current content if site context is not available - like for widgets), and lastly we'll check for any config files and use these to overwrite.
 exports.getTheConfig = function(site) {
 	var config = libs.portal.getSiteConfig();
-    if (!config) {
-        config = exports.getSiteConfig(site, app.name);
-    }
-    let disableAppConfig = false;
-    if (config.general && config.general.default) {
-        disableAppConfig = config.general.default.disableAppConfig;
-    }
+	if (!config) {
+		config = exports.getSiteConfig(site, app.name);
+	}
+	let disableAppConfig = false;
+	if (config.general && config.general.default) {
+		disableAppConfig = config.general.default.disableAppConfig;
+	}
 	//Set empty values so the lookup does not crash
 	if (config.general === undefined) {
 		config.general = { default: {} };
@@ -34,56 +34,57 @@ exports.getTheConfig = function(site) {
 		config.advanced = { default: {} };
 	}
 
-    if (app.config && !disableAppConfig) {
+	if (app.config && !disableAppConfig) {
 		// General settings
-        if (app.config.canonical) {
-            config.general.default.canonical = app.config.canonical;
-        }
-        if (app.config.blockRobots) {
-            config.general.default.blockRobots = app.config.blockRobots;
-        }
-        if (app.config.siteVerification) {
-            config.general.default.siteVerification =
-                app.config.siteVerification;
-        }
+		if (app.config.canonical) {
+			config.general.default.canonical = app.config.canonical;
+		}
+		if (app.config.blockRobots) {
+			config.general.default.blockRobots = app.config.blockRobots;
+		}
+		if (app.config.siteVerification) {
+			config.general.default.siteVerification =
+				app.config.siteVerification;
+		}
 
-        // Twitter
-        if (app.config.twitterUsername) {
-            config.twitter.default.twitterUsername = app.config.twitterUsername;
-        }
+		// Twitter
+		if (app.config.twitterUsername) {
+			config.twitter.default.twitterUsername = app.config.twitterUsername;
+		}
 
-        // SEO fallback
-        if (app.config.seoImage) {
-            config.fallback.default.seoImage = app.config.seoImage;
-        }
-        if (app.config.seoImageIsPrescaled) {
-            config.fallback.default.seoImageIsPrescaled =
-                app.config.seoImageIsPrescaled;
-        }
-        if (app.config.frontpageImage) {
-            config.fallback.default.frontpageImage = app.config.frontPageImage;
-        }
-        if (app.config.frontpageImageIsPrescaled) {
-            config.fallback.default.frontpageImageIsPrescaled =
-                app.config.frontpageImageIsPrescaled;
-        }
-        if (app.config.seoTitle) {
-            config.fallback.default.seoTitle = app.config.seoTitle;
-        }
-        if (app.config.seoDescription) {
-            config.fallback.default.seoDescription = app.config.seoDescription;
-        }
+		// SEO fallback
+		if (app.config.seoImage) {
+			config.fallback.default.seoImage = app.config.seoImage;
+		}
+		if (app.config.seoImageIsPrescaled) {
+			config.fallback.default.seoImageIsPrescaled =
+				app.config.seoImageIsPrescaled;
+		}
+		if (app.config.frontpageImage) {
+			config.fallback.default.frontpageImage = app.config.frontPageImage;
+		}
+		if (app.config.frontpageImageIsPrescaled) {
+			config.fallback.default.frontpageImageIsPrescaled =
+				app.config.frontpageImageIsPrescaled;
+		}
+		if (app.config.seoTitle) {
+			config.fallback.default.seoTitle = app.config.seoTitle;
+		}
+		if (app.config.seoDescription) {
+			config.fallback.default.seoDescription = app.config.seoDescription;
+		}
 
-        // Title
-        if (app.config.titleSeparator) {
-            config.title.default.titleSeparator = app.config.titleSeparator;
-        }
-        if (app.config.titleBehaviour) {
+		// Title
+		if (app.config.titleSeparator) {
+			config.title.default.titleSeparator = app.config.titleSeparator;
+		}
+		if (app.config.titleBehaviour) {
 			config.title.default.titleBehaviour = app.config.titleBehaviour;
-        }
-        if (app.config.titleFrontpageBehaviour) {
-			config.title.default.titleFrontpageBehaviour = app.config.titleFrontpageBehaviour;
-        }
+		}
+		if (app.config.titleFrontpageBehaviour) {
+			config.title.default.titleFrontpageBehaviour =
+				app.config.titleFrontpageBehaviour;
+		}
 
 		// Advanced
 		if (app.config.pathsImages) {
@@ -93,21 +94,21 @@ exports.getTheConfig = function(site) {
 			config.advanced.default.pathsTitles = app.config.pathsTitles;
 		}
 		if (app.config.pathsDescriptions) {
-			config.advanced.default.pathsDescriptions = app.config.pathsDescriptions;
+			config.advanced.default.pathsDescriptions =
+				app.config.pathsDescriptions;
 		}
-		
-    }
-    return config;
+	}
+	return config;
 };
 
 exports.getLang = function(content, site) {
 	// Format locale into the ISO format that Open Graph wants.
 	var localeMap = {
-	    da: 'da_DK',
-	    sv: 'sv_SE',
-	    pl: 'pl_PL',
-	    no: 'nb_NO',
-	    en: 'en_US'
+		da: 'da_DK',
+		sv: 'sv_SE',
+		pl: 'pl_PL',
+		no: 'nb_NO',
+		en: 'en_US'
 	};
 	var lang = content.language || site.language || 'en';
 	return localeMap[lang] || localeMap.en
@@ -125,17 +126,17 @@ exports.getSite = function(siteUrl) {
 exports.getSiteConfig = function(site, applicationKey) {
 	// Code courtesy of PVMerlo at Enonic Discuss - https://discuss.enonic.com/u/PVMerlo
 	if (site && site.data && site.data.siteConfig) {
-        var siteConfigs = libs.util.data.forceArray(site.data.siteConfig);
-        var siteConfig = {};
-        siteConfigs.forEach(function (cfg) {
-            if (applicationKey && cfg.applicationKey == applicationKey) {
-                siteConfig = cfg;
-            } else if (!applicationKey && cfg.applicationKey == app.name) {
-                siteConfig = cfg;
-            }
-        });
-        return siteConfig.config;
-    }
+		var siteConfigs = libs.util.data.forceArray(site.data.siteConfig);
+		var siteConfig = {};
+		siteConfigs.forEach(function (cfg) {
+			if (applicationKey && cfg.applicationKey == applicationKey) {
+				siteConfig = cfg;
+			} else if (!applicationKey && cfg.applicationKey == app.name) {
+				siteConfig = cfg;
+			}
+		});
+		return siteConfig.config;
+	}
 };
 
 function commaStringToArray(str) {
@@ -272,53 +273,56 @@ exports.getOpenGraphImage = function(content, site, defaultImg, defaultImgPresca
 
 	var ogImage;
 
-    // Try to find an image in the content's image or images properties
-    var imageArray = libs.util.data.forceArray(
+	// Try to find an image in the content's image or images properties
+	var imageArray = libs.util.data.forceArray(
 	 		setWithMixin ? stringOrNull(content.x[appNamePath][mixinPath].seoImage)
 			: userDefinedValue
 			|| content.data.image
 			|| content.data.images
 			|| []);
 
-    if (imageArray.length || (defaultImg && !defaultImgPrescaled)) {
+	if (imageArray.length || (defaultImg && !defaultImgPrescaled)) {
+		// Set basic image options
+		var imageOpts = {
+			scale: "block(1200,630)", // Open Graph requires 600x315 for landscape format. Double that for retina display.
+			quality: 85,
+			format: "jpg",
+			type: "absolute",
+		};
 
-        // Set basic image options
-        var imageOpts = {
-            scale: 'block(1200,630)', // Open Graph requires 600x315 for landscape format. Double that for retina display.
-            quality: 85,
-            format: 'jpg',
-            type: 'absolute'
-        };
-
-        // Set the ID to either the first image in the set or use the default image ID
-        imageOpts.id = imageArray.length ? (imageArray[0].image || imageArray[0]) : defaultImg;
+		// Set the ID to either the first image in the set or use the default image ID
+		imageOpts.id = imageArray.length
+			? imageArray[0].image || imageArray[0]
+			: defaultImg;
 
 		// Fetch actual image, make sure not to force it into .jpg if it's a SVG-file.
 		var theImage = libs.content.get({
-		  key: imageOpts.id
+			key: imageOpts.id,
 		});
 		var mimeType = null;
 		if (theImage) {
-		  if (theImage.data.media.attachment) {
-			  mimeType = theImage.attachments[theImage.data.media.attachment].mimeType; // Get the actual mimeType
-		  } else if (theImage.data.media) {
-			  mimeType = theImage.attachments[theImage.data.media].mimeType;
-		  }
+			if (theImage.data.media.attachment) {
+				mimeType =
+					theImage.attachments[theImage.data.media.attachment]
+						.mimeType; // Get the actual mimeType
+			} else if (theImage.data.media) {
+				mimeType = theImage.attachments[theImage.data.media].mimeType;
+			}
 		}
 		// Reset forced format on SVG to make them servable through portal.imageUrl().
-		if (!mimeType || mimeType === 'image/svg+xml') {
-		  imageOpts.quality = null;
-		  imageOpts.format = null;
+		if (!mimeType || mimeType === "image/svg+xml") {
+			imageOpts.quality = null;
+			imageOpts.format = null;
 		}
 
-        ogImage = imageOpts.id ? libs.portal.imageUrl(imageOpts) : null;
+		ogImage = imageOpts.id ? libs.portal.imageUrl(imageOpts) : null;
 	} else if (defaultImg && defaultImgPrescaled) {
-        // Serve pre-optimized image directly
-        ogImage = libs.portal.attachmentUrl({
-            id:defaultImg,
-            type:'absolute'
-        });
-    }
+		// Serve pre-optimized image directly
+		ogImage = libs.portal.attachmentUrl({
+			id: defaultImg,
+			type: "absolute",
+		});
+	}
 
 	// Return the image URL or nothing
 	return ogImage;
