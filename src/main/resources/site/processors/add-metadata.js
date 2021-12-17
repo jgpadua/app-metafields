@@ -13,7 +13,6 @@ exports.responseProcessor = function (req, res) {
     const content = libs.portal.getContent();
 
     if (!content) {
-        /** We don't want 500 on controllers without content */
         return res;
     }
 
