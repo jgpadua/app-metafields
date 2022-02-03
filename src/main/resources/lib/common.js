@@ -29,16 +29,13 @@ exports.getTheConfig = function (site) {
 
 exports.getLang = function (content, site) {
 	// Format locale into the ISO format that Open Graph wants.
-	var localeMap = {
-		da: 'da_DK',
-		sv: 'sv_SE',
-		pl: 'pl_PL',
-		no: 'nb_NO',
-		en: 'en_US'
-	};
-	var lang = content.language || site.language || 'en';
-	return localeMap[lang] || localeMap.en
+	let locale = 'en_US';
+	if (content.language || site.language) {
+		locale = (content.language || site.language).replace('-', '_');
+	}
+	return locale;
 }
+
 exports.getSite = function (siteUrl) {
 	// Code courtesy of PVMerlo at Enonic Discuss - https://discuss.enonic.com/u/PVMerlo
 	var sitesResult = libs.content.query({
