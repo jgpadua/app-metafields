@@ -3,18 +3,29 @@
 <link data-th-if="${canonical}" data-th-attr="rel=canonical" data-th-href="${canonicalUrl}" />
 <meta data-th-if="${siteVerification}" name="google-site-verification" content="" data-th-attr="content=${siteVerification}" />
 <meta name="description" data-th-attr="content=${description}" />
+<!--/* Open graph */-->
 <meta property="og:title" data-th-attr="content=${title}" />
 <meta property="og:description" data-th-attr="content=${description}" />
 <meta property="og:site_name" data-th-attr="content=${siteName}" />
+<th:block data-th-if="${url}">
+<!--/* Don't indent th:block, output gets indented too */-->
 <meta property="og:url" data-th-attr="content=${url}" />
+</th:block>
 <meta property="og:type" data-th-attr="content=${type}" />
-<meta property="og:locale" data-th-attr="content=${locale}" /><div data-th-if="${image}" data-th-remove="tag">
-<meta property="og:image" data-th-attr="content=${image}" />
+<meta property="og:locale" data-th-attr="content=${locale}" />
+<th:block data-th-if="${imageUrl}">
+<meta property="og:image" data-th-attr="content=${imageUrl}" />
 <meta property="og:image:width" data-th-attr="content=${imageWidth}" />
-<meta property="og:image:height" data-th-attr="content=${imageHeight}" /></div><div data-th-if="${twitterUserName}" data-th-remove="tag">
+<meta property="og:image:height" data-th-attr="content=${imageHeight}" />
+</th:block>
+<!--/* Twitter */-->
+<th:block data-th-if="${twitterUserName}">
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" data-th-attr="content=${title}" />
-<meta name="twitter:description" data-th-attr="content=${description}"/><div data-th-if="${image}" data-th-remove="tag">
-<meta name="twitter:image:src" data-th-attr="content=${image}"/></div>
-<meta name="twitter:site" data-th-attr="content=${twitterUserName}"/></div>
+<meta name="twitter:description" data-th-attr="content=${description}"/>
+<th:block data-th-if="${twitterImageUrl}">
+<meta name="twitter:image:src" data-th-attr="content=${twitterImageUrl}"/>
+</th:block>
+<meta name="twitter:site" data-th-attr="content=${twitterUserName}"/>
+</th:block>
 </div>

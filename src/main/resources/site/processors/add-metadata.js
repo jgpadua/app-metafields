@@ -11,6 +11,7 @@ exports.responseProcessor = function (req, res) {
     const site = libs.portal.getSite();
     const siteConfig = libs.portal.getSiteConfig();
     const content = libs.portal.getContent();
+    const appOrSiteConfig = libs.common.getTheConfig();
 
     if (!content) {
         return res;
@@ -22,21 +23,27 @@ exports.responseProcessor = function (req, res) {
 
     const siteVerification = siteConfig.siteVerification || null;
 
-    const url = libs.portal.pageUrl({ path: content._path, type: "absolute" });
+    let url = !appOrSiteConfig.removeOpenGraphUrl ?
+        libs.portal.pageUrl({ path: content._path, type: "absolute" }) :
+        null;
     const canonicalContent = libs.common.getContentForCanonicalUrl(content);
-    const canonicalUrl = canonicalContent ? libs.portal.pageUrl({ path: canonicalContent._path, type: "absolute"}) : url;
+    const canonicalUrl = canonicalContent ?
+        libs.portal.pageUrl({ path: canonicalContent._path, type: "absolute"}) :
+         url;
     let fallbackImage = siteConfig.seoImage;
     let fallbackImageIsPrescaled = siteConfig.seoImageIsPrescaled;
     if (isFrontpage && siteConfig.frontpageImage) {
         fallbackImage = siteConfig.frontpageImage;
         fallbackImageIsPrescaled = siteConfig.frontpageImageIsPrescaled;
     }
-    const image = libs.common.getOpenGraphImage(
-        content,
-        site,
-        fallbackImage,
-        fallbackImageIsPrescaled
-    );
+
+    const imageUrl = !appOrSiteConfig.removeOpenGraphImage ?
+        libs.common.getImage(content, site, fallbackImage, fallbackImageIsPrescaled) :
+        null;
+
+    const twitterImageUrl = !appOrSiteConfig.removeTwitterImage ?
+        libs.common.getImage(content, site, fallbackImage) :
+        null;
 
     const params = {
         title: pageTitle,
@@ -46,14 +53,15 @@ exports.responseProcessor = function (req, res) {
         type: isFrontpage ? "website" : "article",
         url,
         canonicalUrl,
-        image,
+        imageUrl,
         imageWidth: 1200, // Twice of 600x315, for retina
         imageHeight: 630,
         blockRobots:
             siteConfig.blockRobots || libs.common.getBlockRobots(content),
         siteVerification,
         canonical: siteConfig.canonical,
-        twitterUserName: siteConfig.twitterUsername,
+        twitterUserName: appOrSiteConfig.twitterUsername,
+        twitterImageUrl,
     };
 
     const metadata = libs.thymeleaf.render(view, params);

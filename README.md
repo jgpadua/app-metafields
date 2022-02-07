@@ -37,13 +37,13 @@ This app introduces a number of global settings. They're controlled on the app i
 
 ### General settings
 
-**"Generate Canonical meta?"**  
+**"Generate Canonical meta?"**
 Turn generation of canonical meta field on or off. Default is off, since most sites ship with this already. If checked, it will generate the meta tag with current URL. The logic is simple, it will use the current content's path as value, something we know in Enonic XP always is unique.
 
-**"Google Search Console (site verification code)"**  
+**"Google Search Console (site verification code)"**
 Add meta tag for Google Search Console (formerly known as Google Webmaster Tools). Just fill in your ID here to generate the proper tag on all pages. Consult your Google Search Console login for finding this ID.
 
-**"Hide site from search engines?"**  
+**"Hide site from search engines?"**
 We also introduce a setting for hiding the entire site from search engine robots. This might be handy when wanting to have a live beta site but not letting search engine index it. It's up to the search engines to respect this setting, and this setting does not hide the pages from outside visitors as links to them and direct URL's will still work.
 
 ### Twitter Cards
@@ -86,7 +86,10 @@ blockRobots = true|false
 titleSeparator = "<3"
 titleBehaviour = true|false
 titleFrontpageBehaviour = true|false
-twitterUsername = "@EnonicHQ"
+twitterUsername = "@companyTwitter"
+removeTwitterImage = true|false
+removeOpenGraphUrl = true|false
+removeOpenGraphImage = true|false
 # seoImage = "[AnyImageContentID]"
 seoImageIsPrescaled = true|false
 # frontpageImage = "[AnyImageContentID]"

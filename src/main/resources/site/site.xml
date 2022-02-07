@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site>
+<site xmlns="urn:enonic:xp:model:1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:enonic:xp:model:1.0 https://raw.githubusercontent.com/enonic/xp/master/modules/core/core-api/src/main/resources/META-INF/xsd/model.xsd">
+	<x-data name="meta-data" />
 	<form>
 		<field-set>
 			<label>General settings</label>
@@ -39,6 +42,24 @@
 						<regexp>^[@]+.*$</regexp>
 					</config>
 					<occurrences minimum="0" maximum="1"/>
+				</input>
+				<input name="removeTwitterImage" type="checkbox">
+					<label>Remove the twitter image from the card?</label>
+					<help-text>Removes the twitter image tag if username is provided</help-text>
+				</input>
+			</items>
+		</field-set>
+		<!-- Field set for openGraph images (used by facebook) -->
+		<field-set>
+			<label>Open Graph</label>
+			<items>
+				<input name="removeOpenGraphUrl" type="CheckBox">
+					<label>Remove the openGraph Url tag?</label>
+					<help-text>Checking this will stop the app from generating the open graph url tag</help-text>
+				</input>
+				<input name="removeOpenGraphImage" type="CheckBox">
+					<label>Remove the openGraph image tag?</label>
+					<help-text>Checking this will stop the app from generating the open graph image tag</help-text>
 				</input>
 			</items>
 		</field-set>
@@ -124,7 +145,6 @@
 			</items>
 		</field-set>
 	</form>
-	<x-data name="meta-data" />
 	<processors>
 		<response-processor name="add-metadata" order="10"/>
 	</processors>
