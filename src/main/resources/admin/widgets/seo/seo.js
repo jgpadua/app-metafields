@@ -66,7 +66,7 @@ exports.get = function(req) {
 					 fallbackImage = siteConfig.frontpageImage;
 					 fallbackImageIsPrescaled = siteConfig.frontpageImageIsPrescaled;
 				}
-				var image = libs.common.getOpenGraphImage(content, site, fallbackImage, fallbackImageIsPrescaled);
+				var image = libs.common.getImage(content, site, fallbackImage, fallbackImageIsPrescaled);
 
 				params = {
 					summary: {
