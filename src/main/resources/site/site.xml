@@ -128,7 +128,7 @@
 			<label>Advanced: prioritized JSON paths</label><!-- Customized paths yes/no --><!-- +Text about advanced/custom settings needed -->
 			<items>
 				<input name="fullPath" type="checkbox">
-					<label>Access the field by the full json path?</label>
+					<label>Access the field by the full JSON path?</label>
 					<help-text>By default the app will look for the regular fields in your content type (data.myField in the content JSON). If checked you can choose the field setting the entire content JSON structure.</help-text>
 				</input>
 				<input name="pathsImages" type="TextLine">
