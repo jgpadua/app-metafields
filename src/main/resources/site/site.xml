@@ -127,6 +127,10 @@
 		<field-set>
 			<label>Advanced: prioritized JSON paths</label><!-- Customized paths yes/no --><!-- +Text about advanced/custom settings needed -->
 			<items>
+				<input name="fullPath" type="checkbox">
+					<label>Access the field by the full json path?</label>
+					<help-text>By default the app will look for the regular fields in your content type (data.myField in the content JSON). If checked you can choose the field setting the entire content JSON structure.</help-text>
+				</input>
 				<input name="pathsImages" type="TextLine">
 					<label>Images (comma-separated)</label>
 					<help-text>Any custom fields in your content types that you want to use for generating metadata for images? Add them here, comma separated. It's the json paths we're after here, like "headerImage, someOtherfField" or "someOtherField". It will be prioritized before all other fields. Check Github readme for detailed explanation.</help-text>

@@ -78,14 +78,14 @@ function commaStringToArray(str) {
 	return arr;
 }
 
-function findValueInJson(json, paths) {
+function findValueInJson(json, paths, fullPath) {
 	var value = null;
 	var pathLength = paths.length;
-	var jsonPath = ";";
+	var jsonPath;
 
 	for (var i = 0; i < pathLength; i++) {
 		if (paths[i]) {
-			jsonPath = 'json.data["' + paths[i].split('.').join('"]["') + '"]'; // Wrap property so we can have dashes in it
+			jsonPath = (fullPath) ? 'json["' + paths[i].split('.').join('"]["') + '"]' : 'json.data["' + paths[i].split('.').join('"]["') + '"]'; // Wrap property so we can have dashes in it
 			try {
 				value = eval(jsonPath);
 			} catch (e) {
@@ -146,7 +146,7 @@ exports.getPageTitle = function (content, site) {
 
 	var userDefinedPaths = siteConfig.pathsTitles || '';
 	var userDefinedArray = userDefinedPaths ? commaStringToArray(userDefinedPaths) : [];
-	var userDefinedValue = userDefinedPaths ? findValueInJson(content, userDefinedArray) : null;
+	var userDefinedValue = userDefinedPaths ? findValueInJson(content, userDefinedArray, siteConfig.fullPath) : null;
 
 	var setWithMixin = content.x[appNamePath]
 		&& content.x[appNamePath][mixinPath]
@@ -168,7 +168,7 @@ exports.getMetaDescription = function (content, site) {
 
 	var userDefinedPaths = siteConfig.pathsDescriptions || '';
 	var userDefinedArray = userDefinedPaths ? commaStringToArray(userDefinedPaths) : [];
-	var userDefinedValue = userDefinedPaths ? findValueInJson(content, userDefinedArray) : null;
+	var userDefinedValue = userDefinedPaths ? findValueInJson(content, userDefinedArray, siteConfig.fullPath) : null;
 
 	var setWithMixin = content.x[appNamePath]
 		&& content.x[appNamePath][mixinPath]
@@ -192,7 +192,7 @@ exports.getImage = function (content, site, defaultImg, defaultImgPrescaled) {
 	const siteConfig = exports.getTheConfig(site);
 	const userDefinedPaths = siteConfig.pathsImages || '';
 	const userDefinedArray = userDefinedPaths ? commaStringToArray(userDefinedPaths) : [];
-	const userDefinedValue = userDefinedPaths ? findValueInJson(content, userDefinedArray) : null;
+	const userDefinedValue = userDefinedPaths ? findValueInJson(content, userDefinedArray, siteConfig.fullPath) : null;
 	const setWithMixin = content.x[appNamePath]
 		&& content.x[appNamePath][mixinPath]
 		&& content.x[appNamePath][mixinPath].seoImage;
